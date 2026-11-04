@@ -12,8 +12,11 @@
     "test:watch": "vitest",
     "typecheck": "turbo run typecheck",
     "studio": "pnpm --filter @game-artisan/studio dev",
-    "bench": "node scripts/bench.mjs",
-    "clean": "turbo run clean && rm -rf node_modules/.cache"
+    "bench": "node packages/cli/dist/bin.js bench --builtins",
+    "clean": "turbo run clean && rm -rf node_modules/.cache",
+    "pretest": "turbo run build --filter=@game-artisan/runtime... --filter=@game-artisan/agent-sdk",
+    "test:quick": "vitest run",
+    "artisan": "node packages/cli/dist/bin.js"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
