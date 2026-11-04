@@ -1,0 +1,7 @@
+{
+  "variants": [
+    { "id": "en", "locale": "en", "props": {} },
+    { "id": "de", "locale": "de", "props": { "eventBanner": "" } },
+    { "id": "ja", "locale": "ja", "props": { "eventBanner": "" } }
+  ]
+}

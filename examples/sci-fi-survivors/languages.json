@@ -1,0 +1,12 @@
+{
+  "variants": [
+    { "id": "en", "locale": "en", "props": { "tagline": "Hold the line. Ten thousand drones. One orbit.", "ctaText": "Wishlist now", "statusText": "Early Access", "demoText": "Free demo" } },
+    { "id": "de", "locale": "de", "props": { "tagline": "Halte die Stellung. Zehntausend Drohnen. Ein Orbit.", "ctaText": "Jetzt wünschen", "statusText": "Early Access", "demoText": "Gratis-Demo" } },
+    { "id": "es", "locale": "es", "props": { "tagline": "Resiste. Diez mil drones. Una órbita.", "ctaText": "Añadir a deseados", "statusText": "Acceso anticipado", "demoText": "Demo gratis" } },
+    { "id": "fr", "locale": "fr", "props": { "tagline": "Tenez bon. Dix mille drones. Une seule orbite.", "ctaText": "Ajouter à la liste", "statusText": "Accès anticipé", "demoText": "Démo gratuite" } },
+    { "id": "pt-BR", "locale": "pt-BR", "props": { "tagline": "Segure a linha. Dez mil drones. Uma órbita.", "ctaText": "Lista de desejos", "statusText": "Acesso antecipado", "demoText": "Demo grátis" } },
+    { "id": "ja", "locale": "ja", "props": { "tagline": "一万機のドローン。ひとつの軌道。最後まで耐え抜け。", "ctaText": "ウィッシュリストに追加", "statusText": "早期アクセス", "demoText": "無料体験版" } },
+    { "id": "ko", "locale": "ko", "props": { "tagline": "만 대의 드론, 하나의 궤도. 끝까지 버텨라.", "ctaText": "찜하기", "statusText": "앞서 해보기", "demoText": "무료 데모" } },
+    { "id": "zh-CN", "locale": "zh-CN", "props": { "tagline": "一万架无人机，一条轨道。坚守到底。", "ctaText": "加入愿望单", "statusText": "抢先体验", "demoText": "免费试玩" } }
+  ]
+}

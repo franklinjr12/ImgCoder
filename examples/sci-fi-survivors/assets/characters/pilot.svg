@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="600" height="1000" viewBox="0 0 600 1000">
+<defs><g id="s"><path d="M206 300H254V520H206Z"/><path d="M346 300H394V520H346Z"/><path d="M232 600L298 606L290 800L284 960L300 992L216 992L222 960L224 800Z"/><path d="M304 606L370 598L378 800L384 960L400 992L316 992L316 960L310 800Z"/><path d="M222 296Q300 262 378 296L392 440L372 610Q300 630 228 610L208 440Z"/><path d="M300 120C352 120 382 160 382 214C382 262 352 296 300 296C248 296 218 262 218 214C218 160 248 120 300 120Z"/><path d="M222 304L190 320L176 450L196 520L230 512L228 444L242 340Z"/><path d="M378 304L410 318L436 420L468 470L446 496L400 446L376 360Z"/></g>
+<linearGradient id="armor" x1="0" y1="0" x2="1" y2="0.3"><stop offset="0" stop-color="#0b1026"/><stop offset="0.6" stop-color="#1c2650"/><stop offset="1" stop-color="#34437e"/></linearGradient>
+<linearGradient id="visor" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#bffcff"/><stop offset="0.5" stop-color="#2fd3ff"/><stop offset="1" stop-color="#1450c8"/></linearGradient>
+<linearGradient id="gun" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1a2246"/><stop offset="1" stop-color="#3a4a88"/></linearGradient>
+<mask id="sil" maskUnits="userSpaceOnUse" x="0" y="0" width="600" height="1000"><use href="#s" xlink:href="#s" fill="#fff"/></mask>
+<filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="8"/></filter></defs>
+<use href="#s" xlink:href="#s" fill="#ff6ad5"/>
+<g mask="url(#sil)"><use href="#s" xlink:href="#s" fill="url(#armor)" transform="translate(6 5)"/></g>
+<path d="M240 200Q300 176 360 200L356 246Q300 262 244 246Z" fill="#2fd3ff" filter="url(#glow)" opacity="0.8"/>
+<path d="M240 200Q300 176 360 200L356 246Q300 262 244 246Z" fill="url(#visor)"/>
+<path d="M256 204Q296 192 330 202" stroke="#ffffff" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.85"/>
+<path d="M250 340H350M258 380H342" stroke="#2fd3ff" stroke-width="5" stroke-linecap="round" opacity="0.7"/>
+<circle cx="300" cy="440" r="16" fill="#2fd3ff" filter="url(#glow)"/><circle cx="300" cy="440" r="10" fill="#bffcff"/>
+<path d="M226 700H292M310 700H374" stroke="#ff6ad5" stroke-width="4" opacity="0.6"/>
+<path d="M150 470L520 420L530 446L470 456L474 482L430 488L424 462L300 478L296 500L250 506L246 484L160 494Z" fill="url(#gun)"/>
+<path d="M300 466L512 436" stroke="#2fd3ff" stroke-width="4" stroke-linecap="round"/>
+<circle cx="528" cy="432" r="12" fill="#7ff6ff" filter="url(#glow)"/><circle cx="528" cy="432" r="6" fill="#ffffff"/>
+</svg>

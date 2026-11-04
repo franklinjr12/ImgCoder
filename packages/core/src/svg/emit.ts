@@ -191,7 +191,8 @@ function emitRaster(l: RasterLayer, ctx: Ctx): string {
   const { width: w, height: h } = l.transform;
   const asset = ctx.assets.get(l.src) ?? placeholderAsset(l.src);
   const r = imageRect(l.fit, l.position ?? { x: 0.5, y: 0.5 }, w, h, asset.width, asset.height);
-  const needsClip = l.cornerRadius > 0 || r.x < -0.01 || r.y < -0.01 || r.width > w + 0.01 || r.height > h + 0.01;
+  const overflow = r.x < -0.01 || r.y < -0.01 || r.width > w + 0.01 || r.height > h + 0.01;
+  const needsClip = l.cornerRadius > 0;
   let clip: string | undefined;
   if (needsClip) {
     const id = ctx.nextId('c');
@@ -209,7 +210,11 @@ function emitRaster(l: RasterLayer, ctx: Ctx): string {
     'image-rendering': l.rendering === 'pixelated' ? 'optimizeSpeed' : l.rendering === 'smooth' ? 'optimizeQuality' : undefined,
     style: l.rendering === 'pixelated' ? 'image-rendering:pixelated' : undefined,
   });
-  return clip ? el('g', { 'clip-path': clip }, img) : img;
+  if (clip) return el('g', { 'clip-path': clip }, img);
+  // Square crops use a nested viewport rather than clip-path: identical result, and it avoids a
+  // resvg bug where images offset far outside the canvas inside nested clip-paths lose regions.
+  if (overflow) return el('svg', { x: 0, y: 0, width: num(w), height: num(h), viewBox: `0 0 ${num(w)} ${num(h)}`, overflow: 'hidden' }, img);
+  return img;
 }
 
 const layoutCache = new Map<string, TextLayout>();
