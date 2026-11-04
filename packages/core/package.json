@@ -1,0 +1,36 @@
+{
+  "name": "@game-artisan/core",
+  "version": "1.0.0",
+  "description": "GameArtisan Unified Document Model (UDM), composition runtime, JSX compiler, text layout and isomorphic SVG emitter.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+    "./package.json": "./package.json"
+  },
+  "files": ["dist"],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --sourcemap --clean",
+    "typecheck": "tsc --noEmit -p .",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "fontkit": "^2.0.4",
+    "image-size": "^2.0.2",
+    "yoga-layout": "^3.2.1",
+    "zod": "^4.1.0"
+  },
+  "peerDependencies": { "react": ">=18" },
+  "peerDependenciesMeta": { "react": { "optional": true } },
+  "devDependencies": {
+    "@types/fontkit": "^2.0.8",
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "react": "^19.0.0",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.0"
+  },
+  "license": "MIT"
+}

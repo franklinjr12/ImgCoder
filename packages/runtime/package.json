@@ -1,0 +1,35 @@
+{
+  "name": "@game-artisan/runtime",
+  "version": "1.0.0",
+  "description": "Node runtime: project/config loading (TSX via esbuild), render service, encoders, batch worker pool, localization matrix.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+    "./worker": { "import": "./dist/worker.js" },
+    "./package.json": "./package.json"
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup src/index.ts src/worker.ts --format esm --dts --sourcemap --clean",
+    "typecheck": "tsc --noEmit -p .",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@game-artisan/core": "workspace:*",
+    "@game-artisan/fonts": "workspace:*",
+    "@game-artisan/renderer-chromium": "workspace:*",
+    "@game-artisan/renderer-svg": "workspace:*",
+    "@game-artisan/templates-game": "workspace:*",
+    "esbuild": "^0.25.0",
+    "react": "^19.0.0",
+    "zod": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.0"
+  },
+  "license": "MIT"
+}

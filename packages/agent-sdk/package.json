@@ -1,0 +1,32 @@
+{
+  "name": "@game-artisan/agent-sdk",
+  "version": "1.0.0",
+  "description": "MCP server (stdio + SSE/Streamable HTTP), JSON-RPC/REST render microservice and agent variant generator for GameArtisan.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": { "artisan-mcp": "./dist/bin.js" },
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+    "./package.json": "./package.json"
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup src/index.ts src/bin.ts --format esm --dts --sourcemap --clean",
+    "typecheck": "tsc --noEmit -p .",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.4.0",
+    "@game-artisan/core": "workspace:*",
+    "@game-artisan/runtime": "workspace:*",
+    "@modelcontextprotocol/sdk": "^1.20.0",
+    "zod": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.0"
+  },
+  "license": "MIT"
+}

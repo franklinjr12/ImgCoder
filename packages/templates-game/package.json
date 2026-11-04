@@ -1,0 +1,30 @@
+{
+  "name": "@game-artisan/templates-game",
+  "version": "1.0.0",
+  "description": "Production-ready Steam, Itch.io, Epic, console and social templates, store preset matrix, badges, laurels and localization helpers.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+    "./package.json": "./package.json"
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup src/index.tsx --format esm --dts --sourcemap --clean --external react",
+    "typecheck": "tsc --noEmit -p .",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@game-artisan/core": "workspace:*",
+    "react": "^19.0.0",
+    "zod": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.0"
+  },
+  "license": "MIT"
+}

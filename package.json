@@ -1,0 +1,30 @@
+{
+  "name": "game-artisan-monorepo",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "turbo run typecheck",
+    "studio": "pnpm --filter @game-artisan/studio dev",
+    "bench": "node scripts/bench.mjs",
+    "clean": "turbo run clean && rm -rf node_modules/.cache"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "turbo": "^2.5.0",
+    "typescript": "^5.9.0",
+    "vitest": "^3.2.0",
+    "tsup": "^8.5.0",
+    "tsx": "^4.20.0",
+    "react": "^19.0.0",
+    "@types/react": "^19.0.0",
+    "playwright-core": "1.63.0",
+    "zod": "^4.1.0"
+  }
+}

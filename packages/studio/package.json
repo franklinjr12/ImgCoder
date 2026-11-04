@@ -1,0 +1,38 @@
+{
+  "name": "@game-artisan/studio",
+  "version": "1.0.0",
+  "description": "Canva-like WYSIWYG visual studio for GameArtisan compositions and designs (React + Vite).",
+  "type": "module",
+  "main": "./server/index.js",
+  "types": "./server/index.d.ts",
+  "exports": {
+    ".": { "types": "./server/index.d.ts", "import": "./server/index.js" },
+    "./package.json": "./package.json"
+  },
+  "files": ["server", "src", "index.html", "vite.config.ts", "dist"],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit -p .",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@game-artisan/core": "workspace:*",
+    "@game-artisan/fonts": "workspace:*",
+    "@game-artisan/renderer-svg": "workspace:*",
+    "@game-artisan/templates-game": "workspace:*",
+    "@vitejs/plugin-react": "^5.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "vite": "^7.1.0",
+    "zod": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.9.0"
+  },
+  "license": "MIT"
+}

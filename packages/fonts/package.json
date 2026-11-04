@@ -1,0 +1,16 @@
+{
+  "name": "@game-artisan/fonts",
+  "version": "1.0.0",
+  "description": "Bundled OFL fonts (Inter, Cinzel, Bebas Neue, Press Start 2P) for GameArtisan renderers.",
+  "type": "module",
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": { "types": "./index.d.ts", "import": "./index.js" },
+    "./files/*": "./files/*",
+    "./package.json": "./package.json"
+  },
+  "files": ["index.js", "index.d.ts", "files", "LICENSES"],
+  "scripts": { "build": "echo fonts: nothing to build", "typecheck": "echo ok", "clean": "echo ok" },
+  "license": "MIT AND OFL-1.1"
+}
