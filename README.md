@@ -103,6 +103,16 @@ registerRoot(() => (
 Config lives in `artisan.config.ts` (`defineConfig` from `@game-artisan/runtime`): `entry`,
 `documents`, `assetsDir`, `outDir`, `fonts`, `defaultFormat`, `scale`, `locales`, `server`, …
 
+## Visual Studio
+
+`artisan studio` (or `pnpm studio` for the standalone editor with built-in templates) opens a
+Canva-style editor: pan/zoom 10–3200 %, rulers, smart snapping, 8-handle gizmos with rotate/skew,
+layer tree (group, lock, clipping masks, drag-reorder), Props Inspector generated from the Zod
+schema, layer/effect/grading inspectors, IndexedDB asset library, Steam safe-zone and store-UI
+overlays. Code templates are edited through props and `$overrides` (bound layers update props);
+"Detach to design" turns any template into a freely editable `.artisan.json` design. Template
+edits hot-reload without losing props, and assets changed on disk refresh automatically.
+
 ## AI agents (MCP)
 
 ```jsonc

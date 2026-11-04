@@ -1,0 +1,18 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "declaration": false,
+    "sourceMap": false,
+    "allowJs": true,
+    "checkJs": false,
+    "types": ["node", "vite/client"],
+    "baseUrl": ".",
+    "paths": {
+      "@game-artisan/core": ["../core/src/index.ts"],
+      "@game-artisan/renderer-svg": ["../renderer-svg/src/index.ts"],
+      "@game-artisan/fonts": ["../fonts/index.d.ts"]
+    }
+  },
+  "include": ["src", "test", "vite.config.ts", "server/index.d.ts"]
+}
