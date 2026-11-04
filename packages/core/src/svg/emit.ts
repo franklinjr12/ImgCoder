@@ -245,7 +245,9 @@ function emitLiveText(l: TextLayer, layout: TextLayout, w: number, h: number, ct
     layout.lines
       .map((line) => {
         const xOff = alignOffset(line.width, w, l.style.textAlign);
-        return line.runs
+        // One <text> per line when a single face covers it (keeps exported SVG text editable).
+        const single = line.runs.length > 1 && line.runs.every((r) => r.font === line.runs[0].font) ? [{ ...line.runs[0], text: line.text }] : line.runs;
+        return single
           .map((run) => {
             ctx.fontsUsed.add(`${run.font.family}|${run.font.weight}|${run.font.style}`);
             return el(

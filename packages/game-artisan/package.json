@@ -3,15 +3,23 @@
   "version": "1.0.0",
   "description": "GameArtisan: dual-engine (code + visual) game marketing asset generator. `npx game-artisan render ...`",
   "type": "module",
-  "bin": { "game-artisan": "./bin.js", "artisan": "./bin.js" },
+  "bin": {
+    "game-artisan": "./bin.js",
+    "artisan": "./bin.js"
+  },
   "main": "./index.js",
   "types": "./index.d.ts",
-  "files": ["bin.js", "index.js", "index.d.ts"],
+  "files": [
+    "bin.js",
+    "index.js",
+    "index.d.ts",
+    "README.md"
+  ],
   "scripts": {
     "build": "echo ok",
     "typecheck": "echo ok",
     "clean": "echo ok",
-    "build:binary": "bun build ../cli/dist/bin.js --compile --outfile ./bin/artisan"
+    "build:binary": "bun build ./bin.js --compile --target=bun --outfile ./bin/artisan --external sharp --external @resvg/resvg-js --external playwright-core --external esbuild --external vite"
   },
   "dependencies": {
     "@game-artisan/cli": "workspace:*",

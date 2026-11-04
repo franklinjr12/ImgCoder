@@ -60,6 +60,100 @@ function svgImageUri(w: number, h: number, body: string): string {
   return toDataUri(new TextEncoder().encode(svg), 'image/svg+xml');
 }
 
+
+// ---------------------------------------------------------------------------------------
+// Linear colour adjustments are fused into a single feColorMatrix (one filter pass instead
+// of N) — a big win for rasterisers, identical maths to the per-primitive chain.
+
+type M5 = number[]; // 4x5 row-major
+
+function linearMatrix(a: Adjustment): M5 | null {
+  const scaleRGB = (r: number, g: number, b: number, off = 0): M5 => [r, 0, 0, 0, off, 0, g, 0, 0, off, 0, 0, b, 0, off, 0, 0, 0, 1, 0];
+  switch (a.type) {
+    case 'brightness':
+      return scaleRGB(a.value, a.value, a.value);
+    case 'exposure': {
+      const k = Math.pow(2, a.value);
+      return scaleRGB(k, k, k);
+    }
+    case 'contrast':
+      return scaleRGB(a.value, a.value, a.value, 0.5 - 0.5 * a.value);
+    case 'temperature':
+      return scaleRGB(1 + 0.18 * a.value, 1 + 0.04 * a.value, 1 - 0.18 * a.value);
+    case 'invert': {
+      const k = 1 - 2 * a.value;
+      return scaleRGB(k, k, k, a.value);
+    }
+    case 'grayscale':
+      return grayscaleMatrix(a.value);
+    case 'sepia':
+      return sepiaMatrix(a.value);
+    case 'saturate': {
+      const s = a.value;
+      return [
+        0.213 + 0.787 * s, 0.715 - 0.715 * s, 0.072 - 0.072 * s, 0, 0,
+        0.213 - 0.213 * s, 0.715 + 0.285 * s, 0.072 - 0.072 * s, 0, 0,
+        0.213 - 0.213 * s, 0.715 - 0.715 * s, 0.072 + 0.928 * s, 0, 0,
+        0, 0, 0, 1, 0,
+      ];
+    }
+    case 'hue-rotate': {
+      const r = (a.value * Math.PI) / 180;
+      const c = Math.cos(r), sn = Math.sin(r);
+      return [
+        0.213 + c * 0.787 - sn * 0.213, 0.715 - c * 0.715 - sn * 0.715, 0.072 - c * 0.072 + sn * 0.928, 0, 0,
+        0.213 - c * 0.213 + sn * 0.143, 0.715 + c * 0.285 + sn * 0.14, 0.072 - c * 0.072 - sn * 0.283, 0, 0,
+        0.213 - c * 0.213 - sn * 0.787, 0.715 - c * 0.715 + sn * 0.715, 0.072 + c * 0.928 + sn * 0.072, 0, 0,
+        0, 0, 0, 1, 0,
+      ];
+    }
+    default:
+      return null;
+  }
+}
+
+/** b ∘ a : apply a, then b. */
+function composeM5(a: M5, b: M5): M5 {
+  const out: M5 = new Array(20).fill(0);
+  for (let r = 0; r < 4; r++) {
+    for (let c = 0; c < 5; c++) {
+      let v = 0;
+      for (let k = 0; k < 4; k++) v += b[r * 5 + k] * a[k * 5 + c];
+      if (c === 4) v += b[r * 5 + 4];
+      out[r * 5 + c] = v;
+    }
+  }
+  return out;
+}
+
+/** Fuse runs of linear adjustments into synthetic `matrix` adjustments. */
+export function fuseAdjustments(list: Adjustment[]): (Adjustment | { type: '__matrix'; values: number[] })[] {
+  const out: (Adjustment | { type: '__matrix'; values: number[] })[] = [];
+  let acc: M5 | null = null;
+  let count = 0;
+  const flush = (lastSingle?: Adjustment) => {
+    if (!acc) return;
+    if (count === 1 && lastSingle) out.push(lastSingle);
+    else out.push({ type: '__matrix', values: acc });
+    acc = null;
+    count = 0;
+  };
+  let last: Adjustment | undefined;
+  for (const a of list) {
+    const m = linearMatrix(a);
+    if (m) {
+      acc = acc ? composeM5(acc, m) : m;
+      count++;
+      last = a;
+    } else {
+      flush(last);
+      out.push(a);
+    }
+  }
+  flush(last);
+  return out;
+}
+
 export interface FilterBuildResult {
   id: string;
   margin: number;
@@ -109,8 +203,13 @@ export function buildFilter(
     cur = out;
   }
 
-  for (const a of adjustments) {
+  for (const a of fuseAdjustments(adjustments) as Adjustment[]) {
     const out = r();
+    if ((a as any).type === '__matrix') {
+      parts.push(`<feColorMatrix in="${cur}" type="matrix" values="${m((a as any).values)}" result="${out}"/>`);
+      cur = out;
+      continue;
+    }
     switch (a.type) {
       case 'brightness': {
         const s = `type="linear" slope="${num(a.value)}"`;
@@ -290,8 +389,14 @@ export function buildFilter(
       }
       case 'outer-glow': {
         const di = r(), bl = r(), fl = r(), out = r();
-        parts.push(`<feMorphology in="SourceAlpha" operator="dilate" radius="${num(e.radius)}" result="${di}"/>`);
-        parts.push(`<feGaussianBlur in="${di}" stdDeviation="${num(e.blur / 2)}" result="${bl}"/>`);
+        if (e.radius > 0 && e.radius <= e.blur / 2) {
+          // Cheap spread: blur once, then boost alpha (≈ dilate+blur, one pass instead of two).
+          parts.push(`<feGaussianBlur in="SourceAlpha" stdDeviation="${num(e.blur / 2)}" result="${di}"/>`);
+          parts.push(transfer(di, bl, { a: `type="linear" slope="${num(1 + (2 * e.radius) / Math.max(1, e.blur / 2))}"` }));
+        } else {
+          parts.push(`<feMorphology in="SourceAlpha" operator="dilate" radius="${num(e.radius)}" result="${di}"/>`);
+          parts.push(`<feGaussianBlur in="${di}" stdDeviation="${num(e.blur / 2)}" result="${bl}"/>`);
+        }
         const c = svgColor(e.color);
         parts.push(`<feFlood flood-color="${c.hex}" flood-opacity="${num(c.opacity * e.opacity)}" result="${fl}"/>`);
         parts.push(`<feComposite in="${fl}" in2="${bl}" operator="in" result="${out}"/>`);

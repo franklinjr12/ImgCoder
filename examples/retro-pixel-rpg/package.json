@@ -1,0 +1,23 @@
+{
+  "name": "@game-artisan-examples/retro-pixel-rpg",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "list": "artisan list",
+    "render": "artisan render",
+    "batch": "artisan batch --data=languages.json --compositions=all --out=dist/",
+    "studio": "artisan studio"
+  },
+  "dependencies": {
+    "@game-artisan/cli": "workspace:*",
+    "@game-artisan/core": "workspace:*",
+    "@game-artisan/runtime": "workspace:*",
+    "@game-artisan/templates-game": "workspace:*",
+    "react": "^19.0.0",
+    "zod": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0"
+  }
+}

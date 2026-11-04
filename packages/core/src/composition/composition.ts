@@ -189,13 +189,29 @@ export function getCompositions(): CompositionDefinition[] {
   return [...out.values()];
 }
 
+function editDistance(a: string, b: string): number {
+  const dp = Array.from({ length: b.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= a.length; i++) {
+    let prev = dp[0];
+    dp[0] = i;
+    for (let j = 1; j <= b.length; j++) {
+      const tmp = dp[j];
+      dp[j] = Math.min(dp[j] + 1, dp[j - 1] + 1, prev + (a[i - 1] === b[j - 1] ? 0 : 1));
+      prev = tmp;
+    }
+  }
+  return dp[b.length];
+}
+
 export function getComposition(id: string, list: CompositionDefinition[] = getCompositions()): CompositionDefinition {
   const c = list.find((d) => d.id === id);
   if (!c) {
     const near = list
-      .map((d) => d.id)
-      .filter((x) => x.includes(id) || id.includes(x) || x.split('-').some((p) => id.includes(p)))
-      .slice(0, 5);
+      .map((d) => ({ id: d.id, d: editDistance(d.id, id) }))
+      .filter((x) => x.d <= Math.max(2, Math.floor(id.length / 3)) || x.id.includes(id) || id.includes(x.id))
+      .sort((a, b) => a.d - b.d)
+      .slice(0, 5)
+      .map((x) => x.id);
     throw new Error(`Composition "${id}" not found.${near.length ? ` Did you mean: ${near.join(', ')}?` : ''} Available: ${list.map((d) => d.id).join(', ') || '(none)'}`);
   }
   return c;

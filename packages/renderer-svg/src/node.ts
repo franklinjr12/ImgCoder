@@ -66,6 +66,10 @@ export interface RasterOptions {
   fitWidth?: number;
 }
 
+function resvgOptions(opts: RasterOptions): any {
+  return { font: { loadSystemFonts: false, fontBuffers: opts.fontBuffers?.map((b) => Buffer.from(b)) ?? [] }, shapeRendering: 2, textRendering: 1, imageRendering: 0 };
+}
+
 /** Rasterise an SVG string to PNG with resvg (no system font/dependency lookups). */
 export async function rasterizeSvg(svg: string, opts: RasterOptions = {}): Promise<{ png: Buffer; width: number; height: number }> {
   const options: any = {

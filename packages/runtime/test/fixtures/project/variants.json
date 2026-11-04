@@ -1,0 +1,1 @@
+{ "variants": [ { "id": "en", "locale": "en" }, { "id": "ja", "locale": "ja", "props": { "callout": "今すぐプレイ" } }, { "id": "sale", "locale": "en", "props": { "callout": "-40% THIS WEEK", "accent": "#ffd23f" } } ] }

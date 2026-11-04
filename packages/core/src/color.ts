@@ -68,8 +68,7 @@ export function parseColor(input: string | null | undefined): RGBA | null {
   const fn = /^(rgba?|hsla?)\((.*)\)$/.exec(s);
   if (fn) {
     const kind = fn[1];
-    const body = fn[2].replace(/\s*\/\s*/, ',').replace(/\s*,\s*/g, ',').trim();
-    const parts = body.includes(',') ? body.split(',') : body.split(/\s+/);
+    const parts = fn[2].replace(/[,/]/g, ' ').trim().split(/\s+/);
     if (parts.length < 3) return null;
     const alpha = parts[3] != null ? clamp(parseComponent(parts[3], 1), 0, 1) : 1;
     if (kind.startsWith('rgb')) {
